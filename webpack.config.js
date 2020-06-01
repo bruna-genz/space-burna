@@ -4,8 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
-  'production-dependencies': ['phaser'],
+  entry: './src/main.js',
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -55,10 +54,6 @@ module.exports = {
     new webpack.DefinePlugin({
       'typeof CANVAS_RENDERER': JSON.stringify(true),
       'typeof WEBGL_RENDERER': JSON.stringify(true),
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'production-dependencies',
-      filename: 'production-dependencies.bundle.js',
     }),
   ],
 };
