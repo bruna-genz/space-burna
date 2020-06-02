@@ -3,7 +3,6 @@ import Player from "../game/Player";
 import GunShip from "../game/GunShip";
 import ChaserShip from "../game/ChaserShip";
 import CarrierShip from "../game/CarrierShip";
-import ScrollingBackground from "../game/ScrollingBackground";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -13,9 +12,8 @@ export default class Game extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("sprBg0", "assets/sprBg0.png");
-        this.load.image("sprBg0", "assets/sprBg0.png");
-        this.load.image("sprBg1", "assets/sprBg1.png");
+        this.load.image("sprBg1", "assets/baseBg.png");
+        this.load.image("sprBg0", "assets/BgStars1.png");
         this.load.spritesheet("sprExplosion", "assets/explosion.png", {
             frameWidth: 256,
             frameHeight: 256
@@ -36,6 +34,8 @@ export default class Game extends Phaser.Scene {
     }
 
     create() {
+        this.add.image(260, 440, "sprBg1")
+        
         this.anims.create({
             key: "sprExplosion",
             frames: this.anims.generateFrameNumbers("sprExplosion"),
@@ -50,12 +50,6 @@ export default class Game extends Phaser.Scene {
             ],
             laser: this.sound.add("sndLaser")
         };
-
-        this.backgrounds = [];
-        for (let i = 0; i < 5; i++) { //create five scrolling bg
-            let bg = new ScrollingBackground(this, "sprBg0", i * 10);
-            this.backgrounds.push(bg)
-        }
 
         this.createPlayer();
 
@@ -84,11 +78,6 @@ export default class Game extends Phaser.Scene {
             this.enemyLasers,
             this.destroyPlayer
         )
-
-        //update background
-        for (var i = 0; i < this.backgrounds.length; i++) {
-            this.backgrounds[i].update();
-        }
     }
 
     update() {
@@ -101,11 +90,11 @@ export default class Game extends Phaser.Scene {
     createPlayer() {
         this.player = new Player(
             this,
-            this.game.config.width * 0.5,
-            this.game.config.height * 0.5,
+            this.game.config.width * 0.9,
+            this.game.config.height * 0.9,
             "player"
         );
-        this.player.setScale(0.5)
+        this.player.setScale(0.4)
     }
 
     setUpCursors() {

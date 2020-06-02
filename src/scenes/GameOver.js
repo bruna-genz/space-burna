@@ -8,7 +8,8 @@ export default class GameOver extends Phaser.Scene {
     }
 
     create() {
-        console.log("game over")
+        this.add.image(260, 440, "sprBg1")
+        
         this.title = this.add.text(this.game.config.width * 0.5, 128, "GAME OVER", {
             fontFamily: 'monospace',
             fontSize: 48,

@@ -5,8 +5,8 @@ import GameOver from './scenes/GameOver';
 
 var config = { 
   type: Phaser.AUTO,
-  width: 480,
-  height: 640,
+  width: 540,
+  height: 760,
   blackgroundColor: "black",
   physics: {
       default: "arcade",

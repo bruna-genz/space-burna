@@ -8,6 +8,7 @@ export default class MainMenu extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image("sprBg1", "assets/baseBg.png");
         this.load.image("sprBtnPlay", "assets/sprBtnPlay.png");
         this.load.image("sprBtnPlayHover", "assets/sprBtnPlayHover.png");
         this.load.image("sprBtnPlayDown", "assets/sprBtnPlayDown.png");
@@ -20,6 +21,8 @@ export default class MainMenu extends Phaser.Scene {
     }
 
     create() {
+        this.add.image(260, 440, "sprBg1")
+        
         this.sfx = {
             btnOver: this.sound.add("sndBtnOver"),
             btnDown: this.sound.add("sndBtnDown")
