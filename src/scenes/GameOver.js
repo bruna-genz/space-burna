@@ -31,8 +31,8 @@ export default class GameOver extends Phaser.Scene {
         this.btnRestart.setInteractive();
 
         this.btnRestart.on("pointerover", function () {
-            this.btnRestart.setTexture("sprBtnRestartHover"); // set the button texture to sprBtnPlayHover
-            this.sfx.btnOver.play(); // play the button over sound
+            this.btnRestart.setTexture("sprBtnRestartHover"); 
+            this.sfx.btnOver.play();
         }, this);
 
         this.btnRestart.on("pointerout", function () {
@@ -46,7 +46,7 @@ export default class GameOver extends Phaser.Scene {
 
         this.btnRestart.on("pointerup", function () {
             this.btnRestart.setTexture("sprBtnRestart");
-            this.scene.start("SceneMain");
+            this.scene.start("Game");
         }, this);
     }
 }
