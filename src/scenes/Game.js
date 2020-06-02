@@ -3,6 +3,7 @@ import Player from "../game/Player";
 import GunShip from "../game/GunShip";
 import ChaserShip from "../game/ChaserShip";
 import CarrierShip from "../game/CarrierShip";
+import Constants from "../constants/constants"
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -27,7 +28,10 @@ export default class Game extends Phaser.Scene {
         this.load.image("laserEnemy", "assets/laserEnemy.png");
         this.load.image("laserPlayer", "assets/laserPlayer.png");
         this.load.image("player", "assets/player.png");
-        
+        this.load.image("damage1", "assets/damage1.png")
+        this.load.image("damage2", "assets/damage2.png")
+        this.load.image("damage3", "assets/damage3.png")
+
         this.load.audio("sndExplode0", "assets/sndExplode0.wav");
         this.load.audio("sndExplode1", "assets/sndExplode1.wav");
         this.load.audio("sndLaser", "assets/sndLaser.wav");
@@ -35,7 +39,7 @@ export default class Game extends Phaser.Scene {
 
     create() {
         this.add.image(260, 440, "sprBg1")
-        
+
         this.anims.create({
             key: "sprExplosion",
             frames: this.anims.generateFrameNumbers("sprExplosion"),
@@ -53,6 +57,8 @@ export default class Game extends Phaser.Scene {
 
         this.createPlayer();
 
+        this.createPlayerTextures();
+
         this.setUpCursors();
 
         this.enemies = this.add.group();
@@ -60,7 +66,7 @@ export default class Game extends Phaser.Scene {
         this.playerLasers = this.add.group();
 
         this.createEnemy();
-        
+
         this.physics.add.collider(
             this.playerLasers,
             this.enemies,
@@ -76,7 +82,9 @@ export default class Game extends Phaser.Scene {
         this.physics.add.overlap(
             this.player,
             this.enemyLasers,
-            this.destroyPlayer
+            this.damagePlayer,
+            undefined,
+            this
         )
     }
 
@@ -94,7 +102,7 @@ export default class Game extends Phaser.Scene {
             this.game.config.height * 0.9,
             "player"
         );
-        this.player.setScale(0.4)
+        this.player.setScale(0.5)
     }
 
     setUpCursors() {
@@ -103,6 +111,23 @@ export default class Game extends Phaser.Scene {
         this.keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    }
+
+    createPlayerTextures() {
+        let playerDamage1 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
+        playerDamage1.draw("player");
+        playerDamage1.draw("damage1")
+        playerDamage1.saveTexture(Constants.textures.playerDamage1)
+
+        let playerDamage2 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
+        playerDamage2.draw("player");
+        playerDamage2.draw("damage2")
+        playerDamage2.saveTexture(Constants.textures.playerDamage2)
+
+        let playerDamage3 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
+        playerDamage3.draw("player");
+        playerDamage3.draw("damage3")
+        playerDamage3.saveTexture(Constants.textures.playerDamage3) 
     }
 
     createEnemy() {
@@ -173,12 +198,35 @@ export default class Game extends Phaser.Scene {
             player.onDestroy();
             enemy.explode(true);
         }
-    } 
+    }
 
-    destroyPlayer(player, laser) {
+    setPlayerDamageTexture() {
+        console.log(this.player.getData("health"))
+        let playerHealth = this.player.getData("health")
+
+        if (playerHealth >= 75 && (playerHealth < 100)) {
+            return this.player.setTexture(Constants.textures.playerDamage1)
+        } else if (playerHealth >= 50) {
+            return this.player.setTexture(Constants.textures.playerDamage2)
+        } if (playerHealth >= 0) {
+            return this.player.setTexture(Constants.textures.playerDamage3)
+        }
+    }
+
+    damagePlayer(player, laser) {
         if (!player.getData("isDead") && !laser.getData("isDead")) {
-            player.explode(false);
-            player.onDestroy();
+
+            if (player.getData("health") === 25) {
+                player.setData("health", 0)
+                player.explode(false);
+                player.onDestroy();
+
+            } else {
+                player.setData("health", (player.getData("health") - 25))
+                
+                this.setPlayerDamageTexture();                
+            }
+
             laser.destroy();
         }
     }
@@ -217,8 +265,8 @@ export default class Game extends Phaser.Scene {
             this.setPlayerShooting()
         }
     }
-    
-    removerLostEnemies(enemy) {
+
+    removeLostEnemies(enemy) {
         if (enemy.x < -enemy.displayWidth ||
             enemy.x > this.game.config.width + enemy.displayWidth ||
             enemy.y < -enemy.displayHeight * 4 ||
@@ -239,7 +287,7 @@ export default class Game extends Phaser.Scene {
         for (var i = 0; i < this.enemies.getChildren().length; i++) {
             let enemy = this.enemies.getChildren()[i];
             enemy.update();
-            this.removerLostEnemies(enemy);
+            this.removeLostEnemies(enemy);
         }
     }
 
