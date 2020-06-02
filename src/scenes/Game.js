@@ -2,8 +2,9 @@ import "phaser";
 import Player from "../game/Player";
 import GunShip from "../game/GunShip";
 import ChaserShip from "../game/ChaserShip";
-import CarrierShip from "../game/CarrierShip";
-import Constants from "../constants/constants"
+import Meteore from "../game/Meteore";
+import Bonus from "../game/Bonus";
+import Constants from "../constants/constants";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -31,6 +32,8 @@ export default class Game extends Phaser.Scene {
         this.load.image("damage1", "assets/damage1.png")
         this.load.image("damage2", "assets/damage2.png")
         this.load.image("damage3", "assets/damage3.png")
+        this.load.image(Constants.bonus.shooting, "assets/bonusShoot.png")
+        this.load.image(Constants.bonus.shield, "assets/bonusShield.png")
 
         this.load.audio("sndExplode0", "assets/sndExplode0.wav");
         this.load.audio("sndExplode1", "assets/sndExplode1.wav");
@@ -64,8 +67,11 @@ export default class Game extends Phaser.Scene {
         this.enemies = this.add.group();
         this.enemyLasers = this.add.group();
         this.playerLasers = this.add.group();
+        this.bonuses = this.add.group();
 
         this.createEnemy();
+
+        this.createBonus() 
 
         this.physics.add.collider(
             this.playerLasers,
@@ -85,6 +91,12 @@ export default class Game extends Phaser.Scene {
             this.damagePlayer,
             undefined,
             this
+        )
+
+        this.physics.add.overlap(
+            this.player,
+            this.bonuses,
+            this.getBonus
         )
     }
 
@@ -151,7 +163,7 @@ export default class Game extends Phaser.Scene {
                         )
                     }
                 } else {
-                    enemy = new CarrierShip(
+                    enemy = new Meteore(
                         this,
                         Phaser.Math.Between(0, this.game.config.width),
                         0
@@ -161,6 +173,38 @@ export default class Game extends Phaser.Scene {
                 if (enemy !== null) {
                     enemy.setScale(Phaser.Math.Between(10, 5) * 0.05)
                     this.enemies.add(enemy);
+                }
+
+            },
+            callbackScope: this,
+            loop: true
+        });
+    }
+
+    createBonus() {
+        this.time.addEvent({
+            delay: Phaser.Math.Between(3000, 5000),
+            callback: () => {
+                let bonus
+
+                if (Phaser.Math.Between(0, 10) >= 5) {
+                    bonus = new Bonus(
+                        this,
+                        Phaser.Math.Between(0, this.game.config.width),
+                        0,
+                        Constants.bonus.shooting
+                    );
+                } else {
+                    bonus = new Bonus(
+                        this,
+                        Phaser.Math.Between(0, this.game.config.width),
+                        0,
+                        Constants.bonus.shield
+                    )
+                }
+
+                if (bonus !== null) {
+                    this.bonuses.add(bonus);
                 }
 
             },
@@ -229,6 +273,18 @@ export default class Game extends Phaser.Scene {
 
             laser.destroy();
         }
+    }
+
+    getBonus(player, bonus) {
+        if (bonus.texture.key === Constants.bonus.shooting) {
+            if (player.getData("shootingPower") < 3) {
+                player.setData("shootingPower", (player.getData("shootingPower") + 1))
+
+                console.log(player.getData("shootingPower"))
+            }
+        }
+
+        bonus.destroy();
     }
 
     setPlayerMovement() {

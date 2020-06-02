@@ -26,7 +26,7 @@ export default class ChaserShip extends Entity {
             }
         }
 
-        if (this.state == this.states.CHASE) {
+        if (this.state == this.states.CHASE && !this.getData("isDead")) {
             let dx = this.scene.player.x - this.x;
             let dy = this.scene.player.y - this.y;
 

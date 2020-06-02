@@ -9,7 +9,8 @@ export default class Player extends Entity {
         this.setData("isShooting", false);
         this.setData("timerShootDelay", 10);
         this.setData("timerShootTick", this.getData("timerShootDelay") - 1);
-        this.setData("health", 100)
+        this.setData("health", 100),
+        this.setData("shootingPower", 1);
     }
 
     moveUp() {
@@ -54,13 +55,26 @@ export default class Player extends Entity {
             if (this.getData("timerShootTick") < this.getData("timerShootDelay")) {
                 this.setData("timerShootTick", this.getData("timerShootTick") + 1)
            
-            } else { 
-                let laser = new PlayerLaser(this.scene, this.x, this.y);
-                this.scene.playerLasers.add(laser);
+            } else {
+                let shootingPower = this.getData("shootingPower") 
+                
+                this.addLaser(this.x + 5, this.y)
+
+                if (shootingPower === 2) {
+                    this.addLaser((this.x + 30), this.y)
+                } else if (shootingPower === 3) {
+                    this.addLaser((this.x + 30), this.y)
+                    this.addLaser((this.x - 20), this.y)
+                }
 
                 this.scene.sfx.laser.play();
                 this.setData("timerShootTick", 0)
             }
         }
+    }
+
+    addLaser(x, y) {
+        let laser =  new PlayerLaser(this.scene, x, y);
+        this.scene.playerLasers.add(laser);
     }
 }
