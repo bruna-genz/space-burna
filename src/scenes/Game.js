@@ -16,25 +16,20 @@ export default class Game extends Phaser.Scene {
         this.load.image("sprBg0", "assets/sprBg0.png");
         this.load.image("sprBg0", "assets/sprBg0.png");
         this.load.image("sprBg1", "assets/sprBg1.png");
-        this.load.spritesheet("sprExplosion", "assets/sprExplosion.png", {
-            frameWidth: 32,
-            frameHeight: 32
+        this.load.spritesheet("sprExplosion", "assets/explosion.png", {
+            frameWidth: 256,
+            frameHeight: 256
         });
-        this.load.spritesheet("sprEnemy0", "assets/sprEnemy0.png", {
-            frameWidth: 16,
-            frameHeight: 16
-        });
-        this.load.image("sprEnemy1", "assets/sprEnemy1.png");
-        this.load.spritesheet("sprEnemy2", "assets/sprEnemy2.png", {
-            frameWidth: 16,
-            frameHeight: 16
-        });
-        this.load.image("sprLaserEnemy0", "assets/sprLaserEnemy0.png");
-        this.load.image("sprLaserPlayer", "assets/sprLaserPlayer.png");
-        this.load.spritesheet("sprPlayer", "assets/sprPlayer.png", {
-            frameWidth: 16,
-            frameHeight: 16
-        });
+        this.load.image("enemy0", "assets/enemy0.png");
+        this.load.image("enemy1", "assets/enemy1.png");
+        this.load.image("enemy2_1", "assets/meteor1.png");
+        this.load.image("enemy2_2", "assets/meteor2.png");
+        this.load.image("enemy2_3", "assets/meteor3.png");
+        this.load.image("enemy2_4", "assets/meteor4.png");
+        this.load.image("laserEnemy", "assets/laserEnemy.png");
+        this.load.image("laserPlayer", "assets/laserPlayer.png");
+        this.load.image("player", "assets/player.png");
+        
         this.load.audio("sndExplode0", "assets/sndExplode0.wav");
         this.load.audio("sndExplode1", "assets/sndExplode1.wav");
         this.load.audio("sndLaser", "assets/sndLaser.wav");
@@ -42,31 +37,10 @@ export default class Game extends Phaser.Scene {
 
     create() {
         this.anims.create({
-            key: "sprEnemy0",
-            frames: this.anims.generateFrameNumbers("sprEnemy0"),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: "sprEnemy2",
-            frames: this.anims.generateFrameNumbers("sprEnemy2"),
-            frameRate: 20,
-            repeat: -1
-        });
-
-        this.anims.create({
             key: "sprExplosion",
             frames: this.anims.generateFrameNumbers("sprExplosion"),
-            frameRate: 20,
+            frameRate: 15,
             repeat: 0
-        });
-
-        this.anims.create({
-            key: "sprPlayer",
-            frames: this.anims.generateFrameNumbers("sprPlayer"),
-            frameRate: 20,
-            repeat: -1
         });
 
         this.sfx = {
@@ -129,8 +103,9 @@ export default class Game extends Phaser.Scene {
             this,
             this.game.config.width * 0.5,
             this.game.config.height * 0.5,
-            "sprPlayer"
+            "player"
         );
+        this.player.setScale(0.5)
     }
 
     setUpCursors() {
@@ -170,7 +145,7 @@ export default class Game extends Phaser.Scene {
                 }
 
                 if (enemy !== null) {
-                    enemy.setScale(Phaser.Math.Between(10, 20) * 0.1)
+                    enemy.setScale(Phaser.Math.Between(10, 5) * 0.05)
                     this.enemies.add(enemy);
                 }
 
@@ -237,8 +212,6 @@ export default class Game extends Phaser.Scene {
         }
     }
 
-
-    // TODO see if it's possible to put this on player class
     setPlayerShooting() {
         if (this.keySpace.isDown) {
             this.player.setData("isShooting", true);
@@ -256,7 +229,6 @@ export default class Game extends Phaser.Scene {
         }
     }
     
-    // TODO see if it's possible to put this on enemy class
     removerLostEnemies(enemy) {
         if (enemy.x < -enemy.displayWidth ||
             enemy.x > this.game.config.width + enemy.displayWidth ||
@@ -301,6 +273,7 @@ export default class Game extends Phaser.Scene {
     removeLostPlayerLasers() {
         for (var i = 0; i < this.playerLasers.getChildren().length; i++) {
             var laser = this.playerLasers.getChildren()[i];
+            laser.setScale(0.5)
             laser.update();
 
             if (laser.x < -laser.displayWidth ||
