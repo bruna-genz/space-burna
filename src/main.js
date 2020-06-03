@@ -2,6 +2,7 @@ import "phaser";
 import Game from './scenes/Game';
 import MainMenu from './scenes/MainMenu';
 import GameOver from './scenes/GameOver';
+import Instructions from './scenes/Instructions';
 
 var config = { 
   type: Phaser.AUTO,
@@ -14,7 +15,7 @@ var config = {
           gravity: { x: 0, y: 0 }
       }
     },
-    scene: [MainMenu, Game, GameOver],
+    scene: [/*MainMenu, Instructions, Game, */GameOver],
 }
 
 var game = new Phaser.Game(config);

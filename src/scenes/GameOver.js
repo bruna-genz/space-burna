@@ -1,4 +1,6 @@
 import "phaser";
+import Constants from "../misc/constants";
+import WebFontFile from "../misc/WebFontLoader";
 
 export default class GameOver extends Phaser.Scene {
     constructor() {
@@ -7,26 +9,36 @@ export default class GameOver extends Phaser.Scene {
         });
     }
 
-    create() {
-        this.add.image(260, 440, "sprBg1")
-        
-        this.title = this.add.text(this.game.config.width * 0.5, 128, "GAME OVER", {
-            fontFamily: 'monospace',
-            fontSize: 48,
+    preload() {
+        this.load.image(Constants.background, "assets/baseBg.png");
+        this.load.image(Constants.buttons.up, "assets/buttonUp.png");
+        this.load.image(Constants.buttons.down, "assets/buttonDown.png");
+        this.load.audio(Constants.audio.buttonOver, "assets/sndBtnOver.wav");
+        this.load.audio(Constants.audio.buttonDown, "assets/sndBtnDown.wav");
+
+        this.load.addFile(new WebFontFile(this.load, 'Orbitron'))
+    }
+
+    create() {   
+        this.add.image(260, 440, Constants.background)
+
+        this.title = this.add.text(this.game.config.width * 0.5, 250, "GAME OVER", {
+            fontFamily: 'Orbitron',
+            fontSize: 45,
             fontStyle: 'bold',
             color: '#ffffff',
             align: 'center'
-        }).setOrigin(0.5);
+          }).setOrigin(0.5); 
 
         this.sfx = {
-            btnOver: this.sound.add("sndBtnOver"),
-            btnDown: this.sound.add("sndBtnDown")
+            btnOver: this.sound.add(Constants.audio.buttonOver),
+            btnDown: this.sound.add(Constants.audio.buttonDown)
         };
 
         this.btnRestart = this.add.sprite(
             this.game.config.width * 0.5,
             this.game.config.height * 0.5,
-            "sprBtnRestart"
+            Constants.buttons.up
         );
 
         this.btnRestart.setInteractive();

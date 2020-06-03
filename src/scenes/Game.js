@@ -4,7 +4,7 @@ import GunShip from "../game/GunShip";
 import ChaserShip from "../game/ChaserShip";
 import Meteore from "../game/Meteore";
 import Bonus from "../game/Bonus";
-import Constants from "../constants/constants";
+import Constants from "../misc/constants";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -186,7 +186,7 @@ export default class Game extends Phaser.Scene {
 
     createBonus() {
         this.time.addEvent({
-            delay: Phaser.Math.Between(3000, 5000),
+            delay: Phaser.Math.Between(5000, 10000),
             callback: () => {
                 let bonus
 
@@ -275,8 +275,11 @@ export default class Game extends Phaser.Scene {
     
                 } else {
                     player.setData("health", (player.getData("health") - 25))
+                    this.setPlayerDamageTexture();       
                     
-                    this.setPlayerDamageTexture();                
+                    if (player.getData("shootingPower") > 1) {
+                        player.setData("shootingPower", (player.getData("shootingPower") - 1))
+                    }
                 }
             }
 
