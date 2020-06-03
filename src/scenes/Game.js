@@ -122,7 +122,7 @@ export default class Game extends Phaser.Scene {
     createPlayer() {
         this.player = new Player(
             this,
-            this.game.config.width * 0.9,
+            this.game.config.width * 0.5,
             this.game.config.height * 0.9,
             "player"
         );
@@ -308,7 +308,6 @@ export default class Game extends Phaser.Scene {
             }
 
             laser.destroy();
-            console.log(this.player.getData("score"))
         }
     }
 

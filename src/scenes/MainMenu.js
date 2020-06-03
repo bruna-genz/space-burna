@@ -39,9 +39,31 @@ export default class MainMenu extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        const buttons = [this.btnInstructions, this.btnPlay]
+        this.addButtonFunctionality([this.btnInstructions, this.btnPlay])
 
-        buttons.forEach((btn, i) => {
+        this.addButtonText(400, "Instructions")
+        this.addButtonText(460, "Play")
+
+        this.title = this.add.text(this.game.config.width * 0.5, 250, "SPACE BURNA", {
+            fontFamily: 'Orbitron',
+            fontSize: 45,
+            fontStyle: 'bold',
+            color: '#ffffff',
+            align: 'center'
+          }).setOrigin(0.5);        
+    }
+
+    addButtonText(y, text) {
+        this.add.text( 
+            this.game.config.width * 0.5,
+            y,
+            text,
+            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
+        ).setOrigin(0.5)
+    }
+
+    addButtonFunctionality(arr) {
+        arr.forEach((btn, i) => {
             btn.setInteractive()
             
             btn.on("pointerover", () => {
@@ -63,27 +85,5 @@ export default class MainMenu extends Phaser.Scene {
                 
             }, this);
         })
-
-        this.add.text( 
-            this.game.config.width * 0.5,
-            400,
-            "Instructions",
-            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-        ).setOrigin(0.5)
-
-        this.add.text( 
-            this.game.config.width * 0.5,
-            460,
-            "Play",
-            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-        ).setOrigin(0.5)
-
-        this.title = this.add.text(this.game.config.width * 0.5, 250, "SPACE BURNA", {
-            fontFamily: 'Orbitron',
-            fontSize: 45,
-            fontStyle: 'bold',
-            color: '#ffffff',
-            align: 'center'
-          }).setOrigin(0.5);        
     }
 }
