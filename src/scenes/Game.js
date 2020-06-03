@@ -34,6 +34,7 @@ export default class Game extends Phaser.Scene {
         this.load.image("damage3", "assets/damage3.png")
         this.load.image(Constants.bonus.shooting, "assets/bonusShoot.png")
         this.load.image(Constants.bonus.shield, "assets/bonusShield.png")
+        this.load.image(Constants.shield, "assets/shield.png")
 
         this.load.audio("sndExplode0", "assets/sndExplode0.wav");
         this.load.audio("sndExplode1", "assets/sndExplode1.wav");
@@ -46,7 +47,7 @@ export default class Game extends Phaser.Scene {
         this.anims.create({
             key: "sprExplosion",
             frames: this.anims.generateFrameNumbers("sprExplosion"),
-            frameRate: 15,
+            frameRate: 46,
             repeat: 0
         });
 
@@ -60,7 +61,10 @@ export default class Game extends Phaser.Scene {
 
         this.createPlayer();
 
-        this.createPlayerTextures();
+        this.createPlayerDamageTextures("damage1", Constants.textures.playerDamage1)
+        this.createPlayerDamageTextures("damage2", Constants.textures.playerDamage2)
+        this.createPlayerDamageTextures("damage3", Constants.textures.playerDamage3)
+        this.createShieldTexture()
 
         this.setUpCursors();
 
@@ -96,7 +100,9 @@ export default class Game extends Phaser.Scene {
         this.physics.add.overlap(
             this.player,
             this.bonuses,
-            this.getBonus
+            this.getBonus,
+            undefined,
+            this
         )
     }
 
@@ -125,21 +131,18 @@ export default class Game extends Phaser.Scene {
         this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
-    createPlayerTextures() {
-        let playerDamage1 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
-        playerDamage1.draw("player");
-        playerDamage1.draw("damage1")
-        playerDamage1.saveTexture(Constants.textures.playerDamage1)
+    createPlayerDamageTextures(secondSprite, textureName) {
+        let texture = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
+        texture.draw("player");
+        texture.draw(secondSprite)
+        texture.saveTexture(textureName)
+    }
 
-        let playerDamage2 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
-        playerDamage2.draw("player");
-        playerDamage2.draw("damage2")
-        playerDamage2.saveTexture(Constants.textures.playerDamage2)
-
-        let playerDamage3 = this.add.renderTexture(0, 0, 112, 75).setVisible(false);
-        playerDamage3.draw("player");
-        playerDamage3.draw("damage3")
-        playerDamage3.saveTexture(Constants.textures.playerDamage3) 
+    createShieldTexture() {
+        let texture = this.add.renderTexture(0, 0, 144, 137).setVisible(false);
+        texture.draw("player", 25, 40);
+        texture.draw(Constants.shield, 0, 0).setScale(0.6)
+        texture.saveTexture(Constants.textures.playerShield)
     }
 
     createEnemy() {
@@ -187,7 +190,7 @@ export default class Game extends Phaser.Scene {
             callback: () => {
                 let bonus
 
-                if (Phaser.Math.Between(0, 10) >= 5) {
+                if (Phaser.Math.Between(0, 1) === 0) {
                     bonus = new Bonus(
                         this,
                         Phaser.Math.Between(0, this.game.config.width),
@@ -238,8 +241,12 @@ export default class Game extends Phaser.Scene {
 
     destroyPlayerAndEnemy(player, enemy) {
         if (!player.getData("isDead") && !enemy.getData("isDead")) {
-            player.explode(false);
-            player.onDestroy();
+
+            if (!player.getData("isShield")) {
+                player.explode(false);
+                player.onDestroy();
+            }
+            
             enemy.explode(true);
         }
     }
@@ -260,15 +267,17 @@ export default class Game extends Phaser.Scene {
     damagePlayer(player, laser) {
         if (!player.getData("isDead") && !laser.getData("isDead")) {
 
-            if (player.getData("health") === 25) {
-                player.setData("health", 0)
-                player.explode(false);
-                player.onDestroy();
-
-            } else {
-                player.setData("health", (player.getData("health") - 25))
-                
-                this.setPlayerDamageTexture();                
+            if (!player.getData("isShield")) {
+                if (player.getData("health") === 25) {
+                    player.setData("health", 0)
+                    player.explode(false);
+                    player.onDestroy();
+    
+                } else {
+                    player.setData("health", (player.getData("health") - 25))
+                    
+                    this.setPlayerDamageTexture();                
+                }
             }
 
             laser.destroy();
@@ -282,6 +291,19 @@ export default class Game extends Phaser.Scene {
 
                 console.log(player.getData("shootingPower"))
             }
+        } else if (bonus.texture.key === Constants.bonus.shield) {
+            player.setData("isShield", true);
+            player.setTexture(Constants.textures.playerShield)
+
+            this.time.addEvent({
+                delay: 5000,
+                callback: () => {
+                    player.setData("isShield", false);
+                    player.setTexture("player")
+                },
+                callbackScope: this,
+                loop: false
+            });
         }
 
         bonus.destroy();
@@ -358,6 +380,22 @@ export default class Game extends Phaser.Scene {
                 laser.y > this.game.config.height + laser.displayHeight) {
                 if (laser) {
                     laser.destroy();
+                }
+            }
+        }
+    }
+
+    removeLostBonus() {
+        for (var i = 0; i < this.bonuses.getChildren().length; i++) {
+            var bonus = this.bonuses.getChildren()[i];
+            bonus.update();
+
+            if (bonus.x < -bonus.displayWidth ||
+                bonus.x > this.game.config.width + bonus.displayWidth ||
+                bonus.y < -bonus.displayHeight * 4 ||
+                bonus.y > this.game.config.height + bonus.displayHeight) {
+                if (bonus) {
+                    bonus.destroy();
                 }
             }
         }

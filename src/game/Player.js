@@ -11,6 +11,7 @@ export default class Player extends Entity {
         this.setData("timerShootTick", this.getData("timerShootDelay") - 1);
         this.setData("health", 100),
         this.setData("shootingPower", 1);
+        this.setData("isShield", false)
     }
 
     moveUp() {
