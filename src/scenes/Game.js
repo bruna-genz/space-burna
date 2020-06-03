@@ -44,6 +44,8 @@ export default class Game extends Phaser.Scene {
     create() {
         this.add.image(260, 440, "sprBg1")
 
+        this.scoreText = this.add.text(30, 30, "Score: 0", { fontSize: 20, fontFamily: 'Orbitron'}).setDepth(5)
+
         this.anims.create({
             key: "sprExplosion",
             frames: this.anims.generateFrameNumbers("sprExplosion"),
@@ -80,13 +82,17 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(
             this.playerLasers,
             this.enemies,
-            this.destroyEnemy
+            this.destroyEnemy,
+            undefined,
+            this
         )
 
         this.physics.add.overlap(
             this.player,
             this.enemies,
-            this.destroyPlayerAndEnemy
+            this.destroyPlayerAndEnemy,
+            undefined,
+            this
         )
 
         this.physics.add.overlap(
@@ -228,6 +234,22 @@ export default class Game extends Phaser.Scene {
         return arr;
     }
 
+    updateScoreText() {
+        this.scoreText.setText(`Score: ${this.player.getData("score")}`)
+    }
+
+    increaseScore() {
+        this.player.setData("score", (this.player.getData("score") + 10))
+        this.updateScoreText()
+    }
+
+    decreaseScore() {
+        if(this.player.getData("score") >= 10) {
+            this.player.setData("score", (this.player.getData("score") - 10))
+            this.updateScoreText()
+        }
+    }
+
     destroyEnemy(playerLaser, enemy) {
         if (enemy) {
             if (enemy.onDestroy !== undefined) {
@@ -236,6 +258,7 @@ export default class Game extends Phaser.Scene {
 
             enemy.explode(true);
             playerLaser.destroy();
+            this.increaseScore();           
         }
     }
 
@@ -248,11 +271,11 @@ export default class Game extends Phaser.Scene {
             }
             
             enemy.explode(true);
+            this.increaseScore();
         }
     }
 
     setPlayerDamageTexture() {
-        console.log(this.player.getData("health"))
         let playerHealth = this.player.getData("health")
 
         if (playerHealth >= 75 && (playerHealth < 100)) {
@@ -275,7 +298,8 @@ export default class Game extends Phaser.Scene {
     
                 } else {
                     player.setData("health", (player.getData("health") - 25))
-                    this.setPlayerDamageTexture();       
+                    this.setPlayerDamageTexture();   
+                    this.decreaseScore()    
                     
                     if (player.getData("shootingPower") > 1) {
                         player.setData("shootingPower", (player.getData("shootingPower") - 1))
@@ -284,6 +308,7 @@ export default class Game extends Phaser.Scene {
             }
 
             laser.destroy();
+            console.log(this.player.getData("score"))
         }
     }
 
@@ -291,8 +316,6 @@ export default class Game extends Phaser.Scene {
         if (bonus.texture.key === Constants.bonus.shooting) {
             if (player.getData("shootingPower") < 3) {
                 player.setData("shootingPower", (player.getData("shootingPower") + 1))
-
-                console.log(player.getData("shootingPower"))
             }
         } else if (bonus.texture.key === Constants.bonus.shield) {
             player.setData("isShield", true);

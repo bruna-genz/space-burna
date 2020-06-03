@@ -1,12 +1,11 @@
 import "phaser";
 import Constants from "../misc/constants";
 import WebFontFile from "../misc/WebFontLoader";
+import { postScore } from "../misc/ApiCalls";
 
 export default class GameOver extends Phaser.Scene {
     constructor() {
-        super({
-            key: "GameOver"
-        });
+        super("GameOver");
     }
 
     preload() {
@@ -61,5 +60,17 @@ export default class GameOver extends Phaser.Scene {
             this.btnRestart.setTexture("sprBtnRestart");
             this.scene.start("Game");
         }, this);
+    }
+
+
+    createNameInput() {
+        const nameInput = document.createElement('input')
+        nameInput.type = 'text'
+        nameInput.style.backgroundColor = 'white'
+        nameInput.style.position = 'absolute'
+        nameInput.style.top = '25em'
+        nameInput.style.right = '15em'
+        nameInput.style.border = 'none'
+        document.querySelector('body').appendChild(nameInput)
     }
 }
