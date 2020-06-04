@@ -1,6 +1,7 @@
 import "phaser";
 import Constants from "../misc/constants";
 import WebFontFile from "../misc/WebFontLoader";
+import * as Helper from "../misc/Helpers";
 
 export default class Instructions extends Phaser.Scene {
     constructor() {
@@ -10,21 +11,20 @@ export default class Instructions extends Phaser.Scene {
     }
 
     preload() {
-        this.load.addFile(new WebFontFile(this.load, 'Orbitron'))
-        this.load.image(Constants.background, "assets/baseBg.png");
         this.load.image(Constants.player, "assets/player.png")
         this.load.image(Constants.enemy0, "assets/enemy0.png")
         this.load.image(Constants.enemy1, "assets/enemy1.png")
         this.load.image(Constants.meteor1, "assets/meteor1.png")
         this.load.image(Constants.bonus.shooting, "assets/bonusShoot.png")
         this.load.image(Constants.bonus.shield, "assets/bonusShield.png")
-        this.load.image(Constants.buttons.up, "assets/buttonUp.png");
-        this.load.image(Constants.buttons.down, "assets/buttonDown.png");
-        this.load.audio(Constants.audio.buttonOver, "assets/sndBtnOver.wav");
-        this.load.audio(Constants.audio.buttonDown, "assets/sndBtnDown.wav");
     }
 
     create() {
+        this.sfx = {
+            btnOver: this.sound.add(Constants.audio.buttonOver),
+            btnDown: this.sound.add(Constants.audio.buttonDown)
+        };
+        
         this.add.image(260, 440, "sprBg1")
 
         this.add.text(
@@ -43,7 +43,6 @@ export default class Instructions extends Phaser.Scene {
 You can use the arrow keys to move. 
 Use space to shoot.`)
    
-
         this.add.image(110, 235, Constants.enemy0).setScale(0.4)
         this.add.image(110, 285, Constants.enemy1).setScale(0.4)
         this.add.image(110, 335, Constants.meteor1).setScale(0.4)
@@ -79,28 +78,9 @@ Good luck!`, {
                 Constants.buttons.up
             );
 
-            this.btnPlay.setInteractive();
+            Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
 
-            this.btnPlay.on("pointerover", () => {
-                this.sfx.btnOver.play(); 
-            }, this);
-        
-            this.btnPlay.on("pointerdown", () => {
-            this.btnPlay.setTexture(Constants.buttons.down);
-            this.sfx.btnDown.play();
-            }, this);
-
-            this.btnPlay.on("pointerup", () => {
-                this.btnPlay.setTexture(Constants.buttons.up);
-                this.scene.start("Game");                
-            }, this)
-
-            this.add.text( 
-                this.game.config.width * 0.5,
-                660,
-                "Play",
-                { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-            ).setOrigin(0.5)        
+            Helper.addButtonText(this, 660, "Play")     
     }     
 
     addSmallText(y, text) {

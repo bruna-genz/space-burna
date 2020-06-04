@@ -1,6 +1,7 @@
 import "phaser";
 import Constants from "../misc/constants";
 import WebFontFile from "../misc/WebFontLoader";
+import * as Helper from "../misc/Helpers";
 
 export default class MainMenu extends Phaser.Scene {
     constructor() {
@@ -39,10 +40,12 @@ export default class MainMenu extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        this.addButtonFunctionality([this.btnInstructions, this.btnPlay])
+        Helper.addButtonFunctionality(this, this.btnInstructions, () => this.scene.start("Instructions"));
+        Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"));
+        
 
-        this.addButtonText(400, "Instructions")
-        this.addButtonText(460, "Play")
+        Helper.addButtonText(this, 400, "Instructions")
+        Helper.addButtonText(this, 460, "Play")
 
         this.title = this.add.text(this.game.config.width * 0.5, 250, "SPACE BURNA", {
             fontFamily: 'Orbitron',
@@ -51,39 +54,5 @@ export default class MainMenu extends Phaser.Scene {
             color: '#ffffff',
             align: 'center'
           }).setOrigin(0.5);        
-    }
-
-    addButtonText(y, text) {
-        this.add.text( 
-            this.game.config.width * 0.5,
-            y,
-            text,
-            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-        ).setOrigin(0.5)
-    }
-
-    addButtonFunctionality(arr) {
-        arr.forEach((btn, i) => {
-            btn.setInteractive()
-            
-            btn.on("pointerover", () => {
-                this.sfx.btnOver.play(); 
-            }, this);
-        
-            btn.on("pointerdown", () => {
-            btn.setTexture(Constants.buttons.down);
-            this.sfx.btnDown.play();
-            }, this);
-
-            btn.on("pointerup", () => {
-                btn.setTexture(Constants.buttons.up);
-                if (i === 0) {
-                    this.scene.start("Instructions")
-                } else {
-                    this.scene.start("Game");
-                }
-                
-            }, this);
-        })
     }
 }

@@ -1,20 +1,11 @@
 import "phaser";
 import Constants from "../misc/constants";
-import WebFontFile from "../misc/WebFontLoader";
 import { getGameScores } from "../misc/ApiCalls";
+import * as Helper from "../misc/Helpers";
 
 export default class Score extends Phaser.Scene {
     constructor() {
         super("Score")
-    }
-
-    preload() {
-        this.load.addFile(new WebFontFile(this.load, 'Orbitron'))
-        this.load.image(Constants.background, "assets/baseBg.png");
-        this.load.image(Constants.buttons.up, "assets/buttonUp.png");
-        this.load.image(Constants.buttons.down, "assets/buttonDown.png");
-        this.load.audio(Constants.audio.buttonOver, "assets/sndBtnOver.wav");
-        this.load.audio(Constants.audio.buttonDown, "assets/sndBtnDown.wav");
     }
 
     create() {
@@ -40,23 +31,8 @@ export default class Score extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        this.btnPlay.setInteractive()
-            
-        this.btnPlay.on("pointerover", () => {
-            this.sfx.btnOver.play(); 
-        }, this);
-    
-        this.btnPlay.on("pointerdown", () => {
-            this.btnPlay.setTexture(Constants.buttons.down);
-            this.sfx.btnDown.play();
-        }, this);
-
-        this.btnPlay.on("pointerup", async () => {
-            this.btnPlay.setTexture(Constants.buttons.up);
-            this.scene.start("Game"); 
-        }, this);
-
-        this.addButtonText(660, "Play again")
+        Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
+        Helper.addButtonText(this, 660, "Play again")
 
         this.setUpScores()
     }
@@ -84,14 +60,5 @@ export default class Score extends Phaser.Scene {
                 color: '#ffffff',
                 align: 'center'
             }).setOrigin(0.5); 
-    }
-
-    addButtonText(y, text) {
-        this.add.text( 
-            this.game.config.width * 0.5,
-            y,
-            text,
-            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-        ).setOrigin(0.5)
     }
 }

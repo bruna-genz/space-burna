@@ -2,6 +2,7 @@ import "phaser";
 import Constants from "../misc/constants";
 import WebFontFile from "../misc/WebFontLoader";
 import { postScore } from "../misc/ApiCalls";
+import * as Helper from "../misc/Helpers";
 
 export default class GameOver extends Phaser.Scene {
     constructor() {
@@ -10,16 +11,6 @@ export default class GameOver extends Phaser.Scene {
 
     init(data) {
         this.gameScore = data.gameScore;
-    }
-
-    preload() {
-        this.load.image(Constants.background, "assets/baseBg.png");
-        this.load.image(Constants.buttons.up, "assets/buttonUp.png");
-        this.load.image(Constants.buttons.down, "assets/buttonDown.png");
-        this.load.audio(Constants.audio.buttonOver, "assets/sndBtnOver.wav");
-        this.load.audio(Constants.audio.buttonDown, "assets/sndBtnDown.wav");
-
-        this.load.addFile(new WebFontFile(this.load, 'Orbitron'))
     }
 
     create() {   
@@ -48,10 +39,11 @@ export default class GameOver extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        this.addButtonFunctionality([this.btnSubmit, this.btnRestart])
+        Helper.addButtonFunctionality(this, this.btnSubmit, () => this.handleScore(this))
+        Helper.addButtonFunctionality(this, this.btnRestart, () => this.restartGame(this))
 
-        this.addButtonText(470, "Submit score")
-        this.addButtonText(540, "Play again")
+        Helper.addButtonText(this, 470, "Submit score")
+        Helper.addButtonText(this, 540, "Play again")
 
     }
 
@@ -68,19 +60,10 @@ export default class GameOver extends Phaser.Scene {
             }).setOrigin(0.5); 
     }
 
-    addButtonText(y, text) {
-        this.add.text( 
-            this.game.config.width * 0.5,
-            y,
-            text,
-            { color: "#000", fontSize: 20, fontFamily:'Orbitron' }
-        ).setOrigin(0.5)
-    }
-
-    async submitScore() {
-        this.playerName = this.nameInput.value
-        if(this.playerName) {
-            let result = await postScore(this.playerName, this.gameScore)
+    async submitScore(scene) {
+        scene.playerName = scene.nameInput.value
+        if(scene.playerName) {
+            let result = await postScore(scene.playerName, scene.gameScore)
             return result
         } else {
             alert("Name required")
@@ -88,35 +71,20 @@ export default class GameOver extends Phaser.Scene {
         }
     }
 
-    addButtonFunctionality(arr) {
-        arr.forEach((btn, i) => {
-            btn.setInteractive()
-            
-            btn.on("pointerover", () => {
-                this.sfx.btnOver.play(); 
-            }, this);
-        
-            btn.on("pointerdown", () => {
-            btn.setTexture(Constants.buttons.down);
-            this.sfx.btnDown.play();
-            }, this);
-
-            btn.on("pointerup", async () => {
-                btn.setTexture(Constants.buttons.up);
-                if (i === 0) {
-                    let result = await this.submitScore()
-                    if (result) {
-                        this.scene.start("Score")
-                        this.deleteNameInput();
-                    }
-                } else {
-                    this.scene.start("Game");
-                    this.deleteNameInput();
-                }
-                
-            }, this);
-        })
+    async handleScore(scene) {
+        let result = await scene.submitScore(scene)
+        if (result) {
+            scene.scene.start("Score")
+            scene.deleteNameInput();
+        }
     }
+
+    restartGame(scene) {
+        scene.scene.start("Game");
+        scene.deleteNameInput();
+    }
+
+    
 
     createNameInput() {
         const nameInput = document.createElement('input')
