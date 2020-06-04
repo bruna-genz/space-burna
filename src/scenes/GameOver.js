@@ -1,6 +1,5 @@
 import "phaser";
 import Constants from "../misc/constants";
-import WebFontFile from "../misc/WebFontLoader";
 import { postScore } from "../misc/ApiCalls";
 import * as Helper from "../misc/Helpers";
 
@@ -83,8 +82,6 @@ export default class GameOver extends Phaser.Scene {
         scene.scene.start("Game");
         scene.deleteNameInput();
     }
-
-    
 
     createNameInput() {
         const nameInput = document.createElement('input')

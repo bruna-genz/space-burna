@@ -5,6 +5,7 @@ import ChaserShip from "../game/ChaserShip";
 import Meteore from "../game/Meteore";
 import Bonus from "../game/Bonus";
 import Constants from "../misc/constants";
+import * as Logic from "../Logic";
 
 export default class Game extends Phaser.Scene {
     constructor() {
@@ -238,18 +239,6 @@ export default class Game extends Phaser.Scene {
         this.scoreText.setText(`Score: ${this.player.getData("score")}`)
     }
 
-    increaseScore() {
-        this.player.setData("score", (this.player.getData("score") + 10))
-        this.updateScoreText()
-    }
-
-    decreaseScore() {
-        if(this.player.getData("score") >= 10) {
-            this.player.setData("score", (this.player.getData("score") - 10))
-            this.updateScoreText()
-        }
-    }
-
     destroyEnemy(playerLaser, enemy) {
         if (enemy) {
             if (enemy.onDestroy !== undefined) {
@@ -258,7 +247,10 @@ export default class Game extends Phaser.Scene {
 
             enemy.explode(true);
             playerLaser.destroy();
-            this.increaseScore();           
+            
+            if(Logic.calcIncreaseScore(this.player.data.values)) {
+                this.updateScoreText()
+            };
         }
     }
 
@@ -271,7 +263,10 @@ export default class Game extends Phaser.Scene {
             }
             
             enemy.explode(true);
-            this.increaseScore();
+            
+            if(Logic.calcIncreaseScore(this.player.data.values)) {
+                this.updateScoreText()
+            };
         }
     }
 
@@ -287,23 +282,25 @@ export default class Game extends Phaser.Scene {
         }
     }
 
+    killPlayer(player) {
+        player.explode(false);
+        player.onDestroy();
+    }
+
     damagePlayer(player, laser) {
         if (!player.getData("isDead") && !laser.getData("isDead")) {
 
             if (!player.getData("isShield")) {
-                if (player.getData("health") === 25) {
-                    player.setData("health", 0)
-                    player.explode(false);
-                    player.onDestroy();
-    
+               
+                if (Logic.decreasePlayerHealth(player.data.values) === 0) {                    
+                    this.killPlayer(player)
                 } else {
-                    player.setData("health", (player.getData("health") - 25))
                     this.setPlayerDamageTexture();   
-                    this.decreaseScore()    
+                    Logic.decreaseShooting(player.data.values)
                     
-                    if (player.getData("shootingPower") > 1) {
-                        player.setData("shootingPower", (player.getData("shootingPower") - 1))
-                    }
+                    if(Logic.calcDecreaseScore(player.data.values)) {
+                        this.updateScoreText()
+                    }    
                 }
             }
 
@@ -311,13 +308,8 @@ export default class Game extends Phaser.Scene {
         }
     }
 
-    getBonus(player, bonus) {
-        if (bonus.texture.key === Constants.bonus.shooting) {
-            if (player.getData("shootingPower") < 3) {
-                player.setData("shootingPower", (player.getData("shootingPower") + 1))
-            }
-        } else if (bonus.texture.key === Constants.bonus.shield) {
-            player.setData("isShield", true);
+    addShield(player) {
+        player.setData("isShield", true);
             player.setTexture(Constants.textures.playerShield)
 
             this.time.addEvent({
@@ -329,6 +321,13 @@ export default class Game extends Phaser.Scene {
                 callbackScope: this,
                 loop: false
             });
+    }
+
+    getBonus(player, bonus) {
+        if (bonus.texture.key === Constants.bonus.shooting) {
+            Logic.increaseShooting(player.data.values)
+        } else if (bonus.texture.key === Constants.bonus.shield) {
+            this.addShield(player)
         }
 
         bonus.destroy();
@@ -356,7 +355,7 @@ export default class Game extends Phaser.Scene {
         if (this.keySpace.isDown) {
             this.player.setData("isShooting", true);
         } else {
-            this.player.setData("timerShootTick", this.player.getData("timerShootDelay") - 1);
+            Logic.setUpCounter(this.player.data.values);
             this.player.setData("isShooting", false);
         }
     }

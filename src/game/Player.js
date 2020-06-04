@@ -1,16 +1,17 @@
 import "phaser";
 import Entity from "./Entities"
 import PlayerLaser from "./PlayerLaser"
+import * as Logic from "../Logic";
 
 export default class Player extends Entity {
     constructor(scene, x, y, key) {
         super(scene, x, y, key, "Player");
         this.setData("health", 100),
-        this.setData("score", 0),
-        this.setData("speed", 200);
+            this.setData("score", 0),
+            this.setData("speed", 200);
         this.setData("isShooting", false);
         this.setData("timerShootDelay", 10);
-        this.setData("timerShootTick", this.getData("timerShootDelay") - 1);
+        this.setData("timerShootCounter", Logic.setUpCounter(this.data.values));
         this.setData("shootingPower", 1);
         this.setData("isShield", false)
     }
@@ -41,42 +42,46 @@ export default class Player extends Entity {
     }
 
     onDestroy() {
-        this.scene.time.addEvent({ 
+        this.scene.time.addEvent({
             delay: 1000,
             callback: () => {
-                this.scene.scene.start("GameOver", { gameScore: this.getData("score") });
+                this.scene.scene.start("GameOver", {
+                    gameScore: this.getData("score")
+                });
             },
             callbackScope: this,
             loop: false
         });
     }
 
-    setShootingTimer() {
-        if (this.getData("isShooting")) {
-            
-            if (this.getData("timerShootTick") < this.getData("timerShootDelay")) {
-                this.setData("timerShootTick", this.getData("timerShootTick") + 1)
-           
-            } else {
-                let shootingPower = this.getData("shootingPower") 
-                
-                this.addLaser(this.x + 5, this.y)
+    addLaser(x, y) {
+        let laser = new PlayerLaser(this.scene, x, y);
+        this.scene.playerLasers.add(laser);
+    }
 
-                if (shootingPower === 2) {
-                    this.addLaser((this.x + 30), this.y)
-                } else if (shootingPower === 3) {
-                    this.addLaser((this.x + 30), this.y)
-                    this.addLaser((this.x - 20), this.y)
-                }
+    addExtraLaser() {
+        let shootingPower = this.getData("shootingPower")
 
-                this.scene.sfx.laser.play();
-                this.setData("timerShootTick", 0)
-            }
+        if (shootingPower === 2) {
+            this.addLaser((this.x + 30), this.y)
+        } else if (shootingPower === 3) {
+            this.addLaser((this.x + 30), this.y)
+            this.addLaser((this.x - 20), this.y)
         }
     }
 
-    addLaser(x, y) {
-        let laser =  new PlayerLaser(this.scene, x, y);
-        this.scene.playerLasers.add(laser);
+    setShootingTimer() {
+        if (this.getData("isShooting")) {
+
+            if (this.getData("timerShootCounter") < this.getData("timerShootDelay")) {
+                Logic.increaseShootCounter(this.data.values)
+
+            } else {
+                this.addLaser(this.x + 5, this.y)
+                this.addExtraLaser()
+                this.scene.sfx.laser.play();
+                this.setData("timerShootCounter", 0)
+            }
+        }
     }
 }
