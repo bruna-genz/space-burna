@@ -1,4 +1,4 @@
-import Constants from "../misc/constants";
+import Constants from "./constants";
 
 export const addButtonText = (scene, y, text) => {
     scene.add.text( 

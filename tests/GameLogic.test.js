@@ -1,4 +1,4 @@
-import * as Logic from "../src/logic/GameLogic";
+import * as Logic from "../src/helpers/GameLogic";
 
 describe("Increase player score by 10", () => {
     test("initial score 0 should return 10", () => {

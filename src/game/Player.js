@@ -1,7 +1,7 @@
 import "phaser";
 import Entity from "./Entities"
 import PlayerLaser from "./PlayerLaser"
-import * as Logic from "../Logic";
+import * as Logic from "../helpers/GameLogic";
 
 export default class Player extends Entity {
     constructor(scene, x, y, key) {

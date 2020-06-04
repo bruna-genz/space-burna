@@ -4,8 +4,8 @@ import GunShip from "../game/GunShip";
 import ChaserShip from "../game/ChaserShip";
 import Meteore from "../game/Meteore";
 import Bonus from "../game/Bonus";
-import Constants from "../misc/constants";
-import * as Logic from "../Logic";
+import Constants from "../helpers/constants";
+import * as Logic from "../helpers/GameLogic";
 
 export default class Game extends Phaser.Scene {
     constructor() {

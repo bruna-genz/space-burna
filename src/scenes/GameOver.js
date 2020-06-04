@@ -1,7 +1,8 @@
 import "phaser";
-import Constants from "../misc/constants";
-import { postScore } from "../misc/ApiCalls";
-import * as Helper from "../misc/Helpers";
+import Constants from "../helpers/constants";
+import * as Helper from "../helpers/buttonHelpers";
+import * as ScoreLogic from "../helpers/ScoreLogic";
+
 
 export default class GameOver extends Phaser.Scene {
     constructor() {
@@ -24,7 +25,7 @@ export default class GameOver extends Phaser.Scene {
 
         this.addText(300, `Your score: ${this.gameScore}`, 25)
 
-        this.nameInput = this.createNameInput()
+        ScoreLogic.createNameInput()
 
         this.btnSubmit = this.add.sprite(
             this.game.config.width * 0.5,
@@ -38,8 +39,8 @@ export default class GameOver extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        Helper.addButtonFunctionality(this, this.btnSubmit, () => this.handleScore(this))
-        Helper.addButtonFunctionality(this, this.btnRestart, () => this.restartGame(this))
+        Helper.addButtonFunctionality(this, this.btnSubmit, () => ScoreLogic.handleScore(this, this.gameScore))
+        Helper.addButtonFunctionality(this, this.btnRestart, () => ScoreLogic.restartGame(this))
 
         Helper.addButtonText(this, 470, "Submit score")
         Helper.addButtonText(this, 540, "Play again")
@@ -57,42 +58,5 @@ export default class GameOver extends Phaser.Scene {
                 color: '#ffffff',
                 align: 'center'
             }).setOrigin(0.5); 
-    }
-
-    async submitScore(scene) {
-        scene.playerName = scene.nameInput.value
-        if(scene.playerName) {
-            let result = await postScore(scene.playerName, scene.gameScore)
-            return result
-        } else {
-            alert("Name required")
-            return false
-        }
-    }
-
-    async handleScore(scene) {
-        let result = await scene.submitScore(scene)
-        if (result) {
-            scene.scene.start("Score")
-            scene.deleteNameInput();
-        }
-    }
-
-    restartGame(scene) {
-        scene.scene.start("Game");
-        scene.deleteNameInput();
-    }
-
-    createNameInput() {
-        const nameInput = document.createElement('input')
-        nameInput.placeholder = "Your name here"
-        nameInput.type = 'text'
-        document.querySelector('#game-container').appendChild(nameInput)
-
-        return nameInput;
-    }
-
-    deleteNameInput() {
-        this.nameInput.parentElement.removeChild(this.nameInput)
     }
 }

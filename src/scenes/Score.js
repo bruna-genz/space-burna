@@ -1,7 +1,7 @@
 import "phaser";
-import Constants from "../misc/constants";
-import { getGameScores } from "../misc/ApiCalls";
-import * as Helper from "../misc/Helpers";
+import Constants from "../helpers/constants";
+import { getGameScores } from "../helpers/ScoreLogic";
+import * as buttonHelper from "../helpers/buttonHelpers";
 
 export default class Score extends Phaser.Scene {
     constructor() {
@@ -31,22 +31,28 @@ export default class Score extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
-        Helper.addButtonText(this, 660, "Play again")
+        buttonHelper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
+        buttonHelper.addButtonText(this, 660, "Play again")
 
         this.setUpScores()
     }
 
     async setUpScores() {
         const resultObject = await getGameScores()
-        this.scores = resultObject.result.sort((a, b) => (a.score > b.score) ? -1 : 1)
-        
-        for (let i = 0; i < 15; i++) {
-            let y = 150 + (30 * i)
 
-            this.addText(150, y, this.scores[i].user)
-            this.addText(400, y, this.scores[i].score)
+        if (Array.isArray(resultObject.result)) {
+            this.scores = resultObject.result.sort((a, b) => (a.score > b.score) ? -1 : 1)
+        
+            for (let i = 0; i < 15; i++) {
+                let y = 150 + (30 * i)
+
+                this.addText(150, y, this.scores[i].user)
+                this.addText(400, y, this.scores[i].score)
+            }
+        } else {
+            this.addText(150, 160, resultObject)
         }
+        
     }
     
     addText(x, y, text) {

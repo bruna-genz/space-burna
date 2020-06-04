@@ -1,7 +1,6 @@
 import "phaser";
-import Constants from "../misc/constants";
-import WebFontFile from "../misc/WebFontLoader";
-import * as Helper from "../misc/Helpers";
+import Constants from "../helpers/constants";
+import * as buttonHelper from "../helpers/buttonHelpers";
 
 export default class Instructions extends Phaser.Scene {
     constructor() {
@@ -78,9 +77,9 @@ Good luck!`, {
                 Constants.buttons.up
             );
 
-            Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
+            buttonHelper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
 
-            Helper.addButtonText(this, 660, "Play")     
+            buttonHelper.addButtonText(this, 660, "Play")     
     }     
 
     addSmallText(y, text) {

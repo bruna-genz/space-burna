@@ -1,7 +1,7 @@
 import "phaser";
-import Constants from "../misc/constants";
-import WebFontFile from "../misc/WebFontLoader";
-import * as Helper from "../misc/Helpers";
+import Constants from "../helpers/constants";
+import WebFontFile from "../helpers/WebFontLoader";
+import * as buttonHelper from "../helpers/buttonHelpers";
 
 export default class MainMenu extends Phaser.Scene {
     constructor() {
@@ -40,12 +40,12 @@ export default class MainMenu extends Phaser.Scene {
             Constants.buttons.up
         );
 
-        Helper.addButtonFunctionality(this, this.btnInstructions, () => this.scene.start("Instructions"));
-        Helper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"));
+        buttonHelper.addButtonFunctionality(this, this.btnInstructions, () => this.scene.start("Instructions"));
+        buttonHelper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"));
         
 
-        Helper.addButtonText(this, 400, "Instructions")
-        Helper.addButtonText(this, 460, "Play")
+        buttonHelper.addButtonText(this, 400, "Instructions")
+        buttonHelper.addButtonText(this, 460, "Play")
 
         this.title = this.add.text(this.game.config.width * 0.5, 250, "SPACE BURNA", {
             fontFamily: 'Orbitron',
