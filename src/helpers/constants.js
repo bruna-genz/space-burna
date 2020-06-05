@@ -15,8 +15,11 @@ export default {
         },
         audio: {
             buttonOver: "buttonOver",
-            buttonDown: "buttonDown"
-
+            buttonDown: "buttonDown",
+            catchBonus: "catchBonus",
+            explode0: "sndExplode0",
+            explode1: "sndExplode1",
+            laser: "sndLaser"
         },
         shield: "shield",
         background: "sprBg1",
@@ -24,4 +27,5 @@ export default {
         meteor1: "meteor1",
         enemy0: "enemy0",
         enemy1: "enemy1",
+        explosion: "sprExplosion"
     }

@@ -24,7 +24,7 @@ export default class Instructions extends Phaser.Scene {
             btnDown: this.sound.add(Constants.audio.buttonDown)
         };
         
-        this.add.image(260, 440, "sprBg1")
+        this.add.image(260, 440, Constants.background)
 
         this.add.text(
             this.game.config.width * 0.5,

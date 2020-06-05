@@ -15,14 +15,13 @@ export default class Game extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("sprBg1", "assets/baseBg.png");
-        this.load.image("sprBg0", "assets/BgStars1.png");
-        this.load.spritesheet("sprExplosion", "assets/explosion.png", {
+        this.load.image(Constants.background, "assets/baseBg.png");
+        this.load.spritesheet(Constants.explosion, "assets/explosion.png", {
             frameWidth: 256,
             frameHeight: 256
         });
-        this.load.image("enemy0", "assets/enemy0.png");
-        this.load.image("enemy1", "assets/enemy1.png");
+        this.load.image(Constants.enemy0, "assets/enemy0.png");
+        this.load.image(Constants.enemy1, "assets/enemy1.png");
         this.load.image("enemy2_1", "assets/meteor1.png");
         this.load.image("enemy2_2", "assets/meteor2.png");
         this.load.image("enemy2_3", "assets/meteor3.png");
@@ -37,29 +36,31 @@ export default class Game extends Phaser.Scene {
         this.load.image(Constants.bonus.shield, "assets/bonusShield.png")
         this.load.image(Constants.shield, "assets/shield.png")
 
-        this.load.audio("sndExplode0", "assets/sndExplode0.wav");
-        this.load.audio("sndExplode1", "assets/sndExplode1.wav");
-        this.load.audio("sndLaser", "assets/sndLaser.wav");
+        this.load.audio(Constants.audio.explode0, "assets/sndExplode0.wav");
+        this.load.audio(Constants.audio.explode1, "assets/sndExplode1.wav");
+        this.load.audio(Constants.audio.laser, "assets/sndLaser.wav");
+        this.load.audio(Constants.audio.catchBonus, "assets/sndBonus.ogg")
     }
 
     create() {
-        this.add.image(260, 440, "sprBg1")
+        this.add.image(260, 440, Constants.background)
 
         this.scoreText = this.add.text(30, 30, "Score: 0", { fontSize: 20, fontFamily: 'Orbitron'}).setDepth(5)
 
         this.anims.create({
-            key: "sprExplosion",
-            frames: this.anims.generateFrameNumbers("sprExplosion"),
+            key: Constants.explosion,
+            frames: this.anims.generateFrameNumbers(Constants.explosion),
             frameRate: 46,
             repeat: 0
         });
 
         this.sfx = {
             explosions: [
-                this.sound.add("sndExplode0"),
-                this.sound.add("sndExplode1")
+                this.sound.add(Constants.audio.explode0),
+                this.sound.add(Constants.audio.explode1)
             ],
-            laser: this.sound.add("sndLaser")
+            laser: this.sound.add(Constants.audio.laser),
+            bonus: this.sound.add(Constants.audio.catchBonus)
         };
 
         this.createPlayer();
@@ -330,6 +331,7 @@ export default class Game extends Phaser.Scene {
             this.addShield(player)
         }
 
+        this.sfx.bonus.play()
         bonus.destroy();
     }
 
@@ -386,7 +388,7 @@ export default class Game extends Phaser.Scene {
     }
 
     updateEnemies() {
-        for (var i = 0; i < this.enemies.getChildren().length; i++) {
+        for (let i = 0; i < this.enemies.getChildren().length; i++) {
             let enemy = this.enemies.getChildren()[i];
             enemy.update();
             this.removeLost(enemy);
@@ -394,22 +396,22 @@ export default class Game extends Phaser.Scene {
     }
 
     removeLostEnemyLasers() {
-        for (var i = 0; i < this.enemyLasers.getChildren().length; i++) {
-            var laser = this.enemyLasers.getChildren()[i];
+        for (let i = 0; i < this.enemyLasers.getChildren().length; i++) {
+            let laser = this.enemyLasers.getChildren()[i];
             this.removeLost(laser);
         }
     }
 
     removeLostBonus() {
-        for (var i = 0; i < this.bonuses.getChildren().length; i++) {
-            var bonus = this.bonuses.getChildren()[i];
+        for (let i = 0; i < this.bonuses.getChildren().length; i++) {
+            let bonus = this.bonuses.getChildren()[i];
             this.removeLost(bonus);
         }
     }
 
     removeLostPlayerLasers() {
-        for (var i = 0; i < this.playerLasers.getChildren().length; i++) {
-            var laser = this.playerLasers.getChildren()[i];
+        for (let i = 0; i < this.playerLasers.getChildren().length; i++) {
+            let laser = this.playerLasers.getChildren()[i];
             laser.setScale(0.5)
             this.removeLost(laser)
         }
