@@ -1,172 +1,171 @@
-import * as Logic from "../src/helpers/GameLogic";
+import * as Logic from '../src/helpers/GameLogic';
 
-describe("Increase player score by 10", () => {
-    test("initial score 0 should return 10", () => {
-        let playerData = {
-            score: 0
-        }
-    
-        Logic.calcIncreaseScore(playerData);
-    
-        expect(playerData.score).toBe(10);
-    })
+describe('Increase player score by 10', () => {
+  test('initial score 0 should return 10', () => {
+    const playerData = {
+      score: 0,
+    };
 
-    test("initial score 1000000000 should return 1000000010", () =>{
-        let playerData = {
-            score: 1000000000
-        }
-    
-        Logic.calcIncreaseScore(playerData);
-    
-        expect(playerData.score).toBe(1000000010);
-    })
-})
+    Logic.calcIncreaseScore(playerData);
 
-describe("Decrease player score by 10", () => {
-    test("initial score 100 should return 90", () => {
-        let playerData = {
-            score: 100
-        }
+    expect(playerData.score).toBe(10);
+  });
 
-        Logic.calcDecreaseScore(playerData);
-        expect(playerData.score).toBe(90);
-    })
+  test('initial score 1000000000 should return 1000000010', () => {
+    const playerData = {
+      score: 1000000000,
+    };
 
-    test("initial score 1000000000 should return 999999990", () => {
-        let playerData = {
-            score: 1000000000
-        }
+    Logic.calcIncreaseScore(playerData);
 
-        Logic.calcDecreaseScore(playerData);
-        expect(playerData.score).toBe(999999990);
-    })
+    expect(playerData.score).toBe(1000000010);
+  });
+});
 
-    test("don't change if score is less than 10", () =>{
-        let playerData = {
-            score: 0
-        }
+describe('Decrease player score by 10', () => {
+  test('initial score 100 should return 90', () => {
+    const playerData = {
+      score: 100,
+    };
 
-        Logic.calcDecreaseScore(playerData);
-        expect(playerData.score).toBe(0);
-    })
-})
+    Logic.calcDecreaseScore(playerData);
+    expect(playerData.score).toBe(90);
+  });
 
-describe("Decrease player health by 25", () => {
-    test("initial health 100 should return 75", () => {
-        let playerData = {
-            health: 100
-        }
+  test('initial score 1000000000 should return 999999990', () => {
+    const playerData = {
+      score: 1000000000,
+    };
 
-        Logic.decreasePlayerHealth(playerData);
-        expect(playerData.health).toBe(75);
-    })
+    Logic.calcDecreaseScore(playerData);
+    expect(playerData.score).toBe(999999990);
+  });
 
-    test("initial health 25 should return 0", () => {
-        let playerData = {
-            health: 25
-        }
+  test("don't change if score is less than 10", () => {
+    const playerData = {
+      score: 0,
+    };
 
-        Logic.decreasePlayerHealth(playerData);
-        expect(playerData.health).toBe(0);
-    })
+    Logic.calcDecreaseScore(playerData);
+    expect(playerData.score).toBe(0);
+  });
+});
 
-    test("don't change if player health is 0", () => {
-        let playerData = {
-            health: 0
-        }
+describe('Decrease player health by 25', () => {
+  test('initial health 100 should return 75', () => {
+    const playerData = {
+      health: 100,
+    };
 
-        Logic.decreasePlayerHealth(playerData);
-        expect(playerData.health).toBe(0);
-    })
-})
+    Logic.decreasePlayerHealth(playerData);
+    expect(playerData.health).toBe(75);
+  });
 
-describe("Increase player shooting power by 1", () => {
-    test("Shooting power 1 should return 2", () => {
-        let playerData = {
-            shootingPower: 1
-        }
+  test('initial health 25 should return 0', () => {
+    const playerData = {
+      health: 25,
+    };
 
-        Logic.increaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(2);
-    })
+    Logic.decreasePlayerHealth(playerData);
+    expect(playerData.health).toBe(0);
+  });
 
-    test("Shooting power 2 should return 3", () => {
-        let playerData = {
-            shootingPower: 2
-        }
+  test("don't change if player health is 0", () => {
+    const playerData = {
+      health: 0,
+    };
 
-        Logic.increaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(3);
-    })
+    Logic.decreasePlayerHealth(playerData);
+    expect(playerData.health).toBe(0);
+  });
+});
 
-    test("don't change if shooting power is already 3", () => {
-        let playerData = {
-            shootingPower: 3
-        }
+describe('Increase player shooting power by 1', () => {
+  test('Shooting power 1 should return 2', () => {
+    const playerData = {
+      shootingPower: 1,
+    };
 
-        Logic.increaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(3);
-    })
-})
+    Logic.increaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(2);
+  });
 
-describe("Decrease player shooting power by 1", () => {
-    test("Shooting power 3 should return 2", () => {
-        let playerData = {
-            shootingPower: 3
-        }
+  test('Shooting power 2 should return 3', () => {
+    const playerData = {
+      shootingPower: 2,
+    };
 
-        Logic.decreaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(2);
-    })
+    Logic.increaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(3);
+  });
 
-    test("Shooting power 2 should return 1", () => {
-        let playerData = {
-            shootingPower: 2
-        }
+  test("don't change if shooting power is already 3", () => {
+    const playerData = {
+      shootingPower: 3,
+    };
 
-        Logic.decreaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(1);
-    })
+    Logic.increaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(3);
+  });
+});
 
-    test("don't change if shooting power is 1", () => {
-        let playerData = {
-            shootingPower: 1
-        }
+describe('Decrease player shooting power by 1', () => {
+  test('Shooting power 3 should return 2', () => {
+    const playerData = {
+      shootingPower: 3,
+    };
 
-        Logic.decreaseShooting(playerData);
-        expect(playerData.shootingPower).toBe(1);
-    })
-})
+    Logic.decreaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(2);
+  });
 
-describe("Set up counter", () => {
-    test("timer shoot counter should be equal to shoot delay minus 1", () => {
-        let playerData = {
-            timerShootCounter: 0,
-            timerShootDelay: 10
-        }
+  test('Shooting power 2 should return 1', () => {
+    const playerData = {
+      shootingPower: 2,
+    };
 
-        Logic.setUpCounter(playerData);
-        expect(playerData.timerShootCounter).toBe(9)
-    })
-})
+    Logic.decreaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(1);
+  });
 
-describe("Increase shoot counter by 1", () => {
-    test("timer shoot counter 0 should return 1", () => {
-        let playerData = {
-            timerShootCounter: 0,
-        }
+  test("don't change if shooting power is 1", () => {
+    const playerData = {
+      shootingPower: 1,
+    };
 
-        Logic.increaseShootCounter(playerData);
-        expect(playerData.timerShootCounter).toBe(1)
-    })
+    Logic.decreaseShooting(playerData);
+    expect(playerData.shootingPower).toBe(1);
+  });
+});
 
-    test("timer shoot counter 9 should return 10", () => {
-        let playerData = {
-            timerShootCounter: 9,
-        }
+describe('Set up counter', () => {
+  test('timer shoot counter should be equal to shoot delay minus 1', () => {
+    const playerData = {
+      timerShootCounter: 0,
+      timerShootDelay: 10,
+    };
 
-        Logic.increaseShootCounter(playerData);
-        expect(playerData.timerShootCounter).toBe(10)
-    })
-})  
+    Logic.setUpCounter(playerData);
+    expect(playerData.timerShootCounter).toBe(9);
+  });
+});
 
+describe('Increase shoot counter by 1', () => {
+  test('timer shoot counter 0 should return 1', () => {
+    const playerData = {
+      timerShootCounter: 0,
+    };
+
+    Logic.increaseShootCounter(playerData);
+    expect(playerData.timerShootCounter).toBe(1);
+  });
+
+  test('timer shoot counter 9 should return 10', () => {
+    const playerData = {
+      timerShootCounter: 9,
+    };
+
+    Logic.increaseShootCounter(playerData);
+    expect(playerData.timerShootCounter).toBe(10);
+  });
+});
