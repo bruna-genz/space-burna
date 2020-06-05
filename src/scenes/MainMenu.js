@@ -40,12 +40,19 @@ export default class MainMenu extends Phaser.Scene {
             Constants.buttons.up
         );
 
+        this.btnScore = this.add.sprite(
+            this.game.config.width * 0.5,
+            520,
+            Constants.buttons.up
+        )
+
         buttonHelper.addButtonFunctionality(this, this.btnInstructions, () => this.scene.start("Instructions"));
         buttonHelper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"));
-        
+        buttonHelper.addButtonFunctionality(this, this.btnScore, () => this.scene.start("Score"));
 
         buttonHelper.addButtonText(this, 400, "Instructions")
         buttonHelper.addButtonText(this, 460, "Play")
+        buttonHelper.addButtonText(this, 520, "Score board")
 
         this.title = this.add.text(this.game.config.width * 0.5, 250, "SPACE BURNA", {
             fontFamily: 'Orbitron',

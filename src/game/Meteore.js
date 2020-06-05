@@ -1,5 +1,6 @@
 import "phaser";
 import Entity from "./Entities"
+import { decreaseMeteorHealth } from "../helpers/GameLogic"
 
 export default class Meteore extends Entity {
     constructor(scene, x, y) {
@@ -8,5 +9,15 @@ export default class Meteore extends Entity {
         
         super(scene, x, y, sprite, "Meteore");
         this.body.velocity.y = Phaser.Math.Between(50, 100);
+        this.body.setMass(7)
+        this.setData("health", 3)
+    }
+
+    onDamage() {
+        if (this.getData("health") === 1) {
+            this.explode(true)
+        } else {
+            decreaseMeteorHealth(this.data.values)
+        }
     }
 }

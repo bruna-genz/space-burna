@@ -27,12 +27,21 @@ export default class Score extends Phaser.Scene {
 
         this.btnPlay = this.add.sprite(
             this.game.config.width * 0.5,
-            660,
+            640,
+            Constants.buttons.up
+        );
+
+        this.btnMenu = this.add.sprite(
+            this.game.config.width * 0.5,
+            700,
             Constants.buttons.up
         );
 
         buttonHelper.addButtonFunctionality(this, this.btnPlay, () => this.scene.start("Game"))
-        buttonHelper.addButtonText(this, 660, "Play again")
+        buttonHelper.addButtonFunctionality(this, this.btnMenu, () => this.scene.start("MainMenu"))
+        
+        buttonHelper.addButtonText(this, 640, "Play")
+        buttonHelper.addButtonText(this, 700, "Menu")
 
         this.setUpScores()
     }

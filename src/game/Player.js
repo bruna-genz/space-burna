@@ -2,18 +2,20 @@ import "phaser";
 import Entity from "./Entities"
 import PlayerLaser from "./PlayerLaser"
 import * as Logic from "../helpers/GameLogic";
+import constants from "../helpers/constants";
 
 export default class Player extends Entity {
     constructor(scene, x, y, key) {
         super(scene, x, y, key, "Player");
         this.setData("health", 100),
-            this.setData("score", 0),
-            this.setData("speed", 200);
+        this.setData("score", 0),
+        this.setData("speed", 200);
         this.setData("isShooting", false);
         this.setData("timerShootDelay", 10);
         this.setData("timerShootCounter", Logic.setUpCounter(this.data.values));
         this.setData("shootingPower", 1);
         this.setData("isShield", false)
+        this.setData("currentTexture", constants.player)
     }
 
     moveUp() {

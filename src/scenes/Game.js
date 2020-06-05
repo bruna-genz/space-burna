@@ -165,6 +165,7 @@ export default class Game extends Phaser.Scene {
                         Phaser.Math.Between(0, this.game.config.width),
                         0
                     );
+                    enemy.setScale(Phaser.Math.Between(10, 5) * 0.05)
                 } else if (Phaser.Math.Between(0, 10) >= 5) {
                     if (this.getEnemiesByType("ChaserShip").length < 5) {
                         enemy = new ChaserShip(
@@ -172,6 +173,7 @@ export default class Game extends Phaser.Scene {
                             Phaser.Math.Between(0, this.game.config.width),
                             0
                         )
+                        enemy.setScale(Phaser.Math.Between(10, 5) * 0.05)
                     }
                 } else {
                     enemy = new Meteore(
@@ -179,10 +181,10 @@ export default class Game extends Phaser.Scene {
                         Phaser.Math.Between(0, this.game.config.width),
                         0
                     )
+                    enemy.setScale(Phaser.Math.Between(15, 10) * 0.05)
                 }
 
                 if (enemy !== null) {
-                    enemy.setScale(Phaser.Math.Between(10, 5) * 0.05)
                     this.enemies.add(enemy);
                 }
 
@@ -246,7 +248,12 @@ export default class Game extends Phaser.Scene {
                 enemy.onDestroy();
             }
 
-            enemy.explode(true);
+            if (enemy.onDamage !== undefined) {
+                enemy.onDamage();
+            } else {
+                enemy.explode(true);
+            }
+            
             playerLaser.destroy();
             
             if(Logic.calcIncreaseScore(this.player.data.values)) {
@@ -273,14 +280,18 @@ export default class Game extends Phaser.Scene {
 
     setPlayerDamageTexture() {
         let playerHealth = this.player.getData("health")
+        let texture
 
         if (playerHealth >= 75 && (playerHealth < 100)) {
-            return this.player.setTexture(Constants.textures.playerDamage1)
+            texture = Constants.textures.playerDamage1
         } else if (playerHealth >= 50) {
-            return this.player.setTexture(Constants.textures.playerDamage2)
-        } if (playerHealth >= 0) {
-            return this.player.setTexture(Constants.textures.playerDamage3)
+            texture = Constants.textures.playerDamage2
+        } else if (playerHealth >= 0) {
+            texture = Constants.textures.playerDamage3
         }
+
+        this.player.setData("currentTexture", texture)
+        this.player.setTexture(texture)
     }
 
     killPlayer(player) {
@@ -317,7 +328,7 @@ export default class Game extends Phaser.Scene {
                 delay: 5000,
                 callback: () => {
                     player.setData("isShield", false);
-                    player.setTexture("player")
+                    player.setTexture(this.player.getData("currentTexture"))
                 },
                 callbackScope: this,
                 loop: false

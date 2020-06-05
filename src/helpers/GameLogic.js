@@ -31,12 +31,14 @@ export const decreaseShooting = (values) => {
     }
 }
 
-// PLAYER LOGIC
-
 export const setUpCounter = (values) => {
     values.timerShootCounter = values.timerShootDelay - 1
 }
 
 export const increaseShootCounter = (values) => {
     values.timerShootCounter += 1
+}
+
+export const decreaseMeteorHealth = (values) => {
+    values.health -= 1
 }
