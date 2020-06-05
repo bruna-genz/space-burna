@@ -46,6 +46,7 @@ export default class Game extends Phaser.Scene {
         this.add.image(260, 440, Constants.background)
 
         this.scoreText = this.add.text(30, 30, "Score: 0", { fontSize: 20, fontFamily: 'Orbitron'}).setDepth(5)
+        this.healthText = this.add.text(400, 30, "Health: 100", { fontSize: 20, fontFamily: 'Orbitron'}).setDepth(5)
 
         this.anims.create({
             key: Constants.explosion,
@@ -242,6 +243,10 @@ export default class Game extends Phaser.Scene {
         this.scoreText.setText(`Score: ${this.player.getData("score")}`)
     }
 
+    updateHealthText() {
+        this.healthText.setText(`Health: ${this.player.getData("health")}`)
+    }
+
     destroyEnemy(playerLaser, enemy) {
         if (enemy) {
             if (enemy.onDestroy !== undefined) {
@@ -314,6 +319,8 @@ export default class Game extends Phaser.Scene {
                         this.updateScoreText()
                     }    
                 }
+
+                this.updateHealthText()
             }
 
             laser.destroy();
