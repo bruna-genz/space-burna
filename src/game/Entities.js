@@ -15,7 +15,6 @@ export default class Entity extends Phaser.GameObjects.Sprite {
       this.setTexture('sprExplosion');
       this.play('sprExplosion');
 
-      explosiosSfx[Phaser.Math.Between(0, explosiosSfx.length - 1)].play();
       const explosionSounds = this.scene.sfx.explosions;
       explosionSounds[Phaser.Math.Between(0, explosionSounds.length - 1)].play();
 

@@ -52,7 +52,7 @@ export default class Score extends Phaser.Scene {
     if (Array.isArray(resultObject.result)) {
       this.scores = resultObject.result.sort((a, b) => ((a.score > b.score) ? -1 : 1));
 
-      for (let i = 0; i < 15; i + 1) {
+      for (let i = 0; i < 15; i += 1) {
         const y = 150 + (30 * i);
 
         this.addText(150, y, this.scores[i].user);
