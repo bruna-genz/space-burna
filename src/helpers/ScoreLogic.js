@@ -8,6 +8,7 @@ const apiInfo = {
   gameID: '1504TZsX2gyehoKXvxL4',
 };
 
+// eslint-disable-next-line consistent-return
 const getPlayerName = () => {
   const playerName = nameInput.value;
   if (playerName) {
