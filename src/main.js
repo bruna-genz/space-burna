@@ -1,4 +1,4 @@
-import 'phaser';
+import Phaser from 'phaser';
 import './styles/styles.scss';
 import Game from './scenes/Game';
 import MainMenu from './scenes/MainMenu';
@@ -21,4 +21,5 @@ const config = {
   parent: document.querySelector('#game-container'),
 };
 
+// eslint-disable-next-line no-unused-vars
 const game = new Phaser.Game(config);
