@@ -26,7 +26,7 @@ All project requirements can be seen [here](https://www.notion.so/Shooter-game-2
 
 # About the Game
 
-Space Burna is a classic shooting game that happens on the space. The goal is to survive for the longest possible time, while you destroy the enemies and avoid being shot to death. Each enemy destroied gives you 10 points. Earn enough points to see your name on the score board.
+Space Burna is a classic shooting game that happens in the space. The goal is to survive for the longest possible time, while you destroy the enemies and avoid being shot to death. Each enemy destroyed gives you 10 points. Earn enough points to see your name on the scoreboard.
 
 ## How to play
 
@@ -38,20 +38,20 @@ The player controls a spaceship. Use the arrow keys on your keyboard to move aro
 
 ![Player spaceship](/assets/player.png)
 
-This is your spaceship. You can move it up, down, left and right using the arrow keys. You can also shoot by pressing enter.
+This is your spaceship. You can move it up, down, left, and right using the arrow keys. You can also shoot by pressing enter.
 It starts the game with 100% of health. If you got shot, the health decreases by 25%, so watch out!
 
 - **GunShip**
 
 ![Gunship](/assets/enemy0.png)
 
-This enemy has the guns, and there are lots of them around the space. Luckily, they are very predictable and easy to destroy.
+This enemy has guns, and there are lots of them around the space. Luckily, they are very predictable and easy to destroy.
 
 - **ChaserShip**
 
 ![Chasership](/assets/enemy1.png)
 
-These little ship looks nice, but it will chase you down until they hit you.
+This little ship looks nice, but it will chase you down until they hit you.
 
 - **Meteors**
 
@@ -64,7 +64,7 @@ Watch out for the meteors. They are big and hard to destroy.
 ![Bonus](/assets/bonusShoot.png)
 ![Bonus](/assets/bonusShield.png)
 
-Finally something good! There are two kind of bonus items: 
+Finally something good! There are two kinds of bonus items: 
 
 1) Extra shooting power: it adds multiple shots. You can have up to three at the same time.
 Very handy when there are a lot of enemies to destroy. However, if you got shot, your shooting power decreases.
@@ -74,11 +74,11 @@ Also, if you collide with an enemy, it will explode.
 
 ## Scenes
 
-This game have five scenes:
+This game has five scenes:
 
 - **Main menu**
 
-This is the initial scene. It allows the player to start the game, go to the instructions or to the score board.
+This is the initial scene. It allows the player to start the game, go to the instructions or the scoreboard.
 
 <img src='./assets/scene-shots/main-menu.png' width='300'>
 
@@ -96,13 +96,13 @@ This is the main scene of the game, where all the action happens.
 
 - **Game Over**
 
-This scene appears when the player collides with an enemy or if the health got to 0. It displays the score for that game and allows the player to enter their name and submit the score. It also allows to replay.
+This scene appears when the player collides with an enemy or if the health got to 0. It displays the score for that game and allows the player to enter their name and submit the score. It also allows them to replay.
 
 <img src='./assets/scene-shots/game-over-scene.png' width='300'>
 
 - **Score board**
 
-This scene display the name and score of the 15 player who had the highest score on the game. Of course you will want to be the first one in that list!
+This scene displays the name and score of the 15 players who had the highest score on the game. Of course, you will want to be the first one on that list!
 It also allows the player to play again.
 
 <img src='./assets/scene-shots/score-scene.png' width='300'>
@@ -119,7 +119,7 @@ It also allows the player to play again.
 **To install the game locally**
 - Download or clone the [game repository](https://github.com/bruna-genz/shooter_game/tree/testing).
 - Navigate to the game root directory from your terminal.
-- Install the required packages with the following comand:
+- Install the required packages with the following command:
 ```
 npm i
 ```
@@ -143,13 +143,13 @@ npm run start
 - Twitter: [@Bruna_GK](https://twitter.com/Bruna_GK)
 - Linkedin: [Bruna Genz](https://www.linkedin.com/in/brunagenz/)
 
-# Acknowledments
+# Acknowledgments
 - Jared, for this simple and complete [tutorial](https://learn.yorkcs.com/category/tutorials/gamedev/phaser-3/build-a-space-shooter-with-phaser-3/).
 - [Kenney](https://kenney.nl/), for the beautiful assets.
 
 # 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
+Contributions, issues, and feature requests are welcome!
 
 # Show your support
 

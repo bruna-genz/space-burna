@@ -11,8 +11,8 @@ export default class Player extends Entity {
     this.setData('score', 0);
     this.setData('speed', 200);
     this.setData('isShooting', false);
-    this.setData('timerShootDelay', 10);
-    this.setData('timerShootCounter', Logic.setUpCounter(this.data.values));
+    this.setData('timerShootDelay', 20);
+    this.setData('timerShootCounter', this.getData('timerShootDelay') - 1);
     this.setData('shootingPower', 1);
     this.setData('isShield', false);
     this.setData('currentTexture', constants.player);
