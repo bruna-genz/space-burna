@@ -1,0 +1,29 @@
+body {
+    height: 100%;
+    background-color: #eceaea;
+}
+
+#game-container {
+    height: 760px;
+    width: 540px;
+    margin: 2em auto;
+    position: relative;
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+
+    input {
+        background-color: white;
+        position: absolute;
+        width: 18em;
+        top: 27em;
+        right: 11em;
+        border: 1px solid gray;
+        padding: 10px;
+        border-radius: 5px;
+    }
+}
