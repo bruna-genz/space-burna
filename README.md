@@ -142,6 +142,7 @@ npm run start
 - Github: [@bruna-genz](https://github.com/bruna-genz)
 - Twitter: [@Bruna_GK](https://twitter.com/Bruna_GK)
 - Linkedin: [Bruna Genz](https://www.linkedin.com/in/brunagenz/)
+- Email: brunagenz92@gmail.com
 
 # Acknowledgments
 - Jared, for this simple and complete [tutorial](https://learn.yorkcs.com/category/tutorials/gamedev/phaser-3/build-a-space-shooter-with-phaser-3/).
