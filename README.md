@@ -16,6 +16,7 @@
 - [Installation](https://github.com/bruna-genz/space-burna#installation)
 - [Testing](https://github.com/bruna-genz/space-burna#testing)
 - [Build with](https://github.com/bruna-genz/space-burna#build-with)
+- [Future features](https://github.com/bruna-genz/space-burna#future-features)
 - [Author](https://github.com/bruna-genz/space-burna#author)
 - [Acknowledgments](https://github.com/bruna-genz/space-burna#acknowledgments)
 
@@ -23,7 +24,7 @@
 
 This is my Capstone project for Microverse's JavaScript course. In this project, the goal was to build a shooter game using JavaScript and the game engine Phaser.
 
-All project requirements can be seen [here](https://www.notion.so/Shooter-game-203e819041c7486bb36f9e65faecba27)
+All project requirements can be seen [here](https://www.notion.so/Shooter-game-203e819041c7486bb36f9e65faecba27).
 
 # About the Game
 
@@ -137,12 +138,18 @@ npm run test
 ```
 
 # Built with
-- Phaser3
-- HTML5
-- JavaScript
-- SASS
-- Webpack
-- Babel
+- Phaser3.
+- HTML5.
+- JavaScript.
+- SASS.
+- Webpack.
+- Babel.
+
+# Future features
+
+- Set up energy level for the player's ship to limit consecutive shots.
+- Add levels.
+- Have 'boss' enemy to defeat before advance levels.
 
 # Author
 :woman: **Bruna Genz**
