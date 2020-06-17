@@ -119,7 +119,7 @@ It also allows the player to play again.
 - Just access [this link](https://spaceburna.netlify.app/) for the live version.
 
 **To install the game locally**
-- Download or clone the [game repository](https://github.com/bruna-genz/shooter_game/tree/testing).
+- Download or clone the [game repository](https://github.com/bruna-genz/space-burna).
 - Navigate to the game root directory from your terminal.
 - Install the required packages with the following command:
 ```
