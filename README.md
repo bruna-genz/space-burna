@@ -7,16 +7,17 @@
 
 # Table of Contents
 
-- [About](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#about)
-- [About the Game](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#about-the-game)
-  - [How to play](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#how-to-play)
-  - [Characters](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#characters)
-  - [Scenes](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#scenes)
-- [Prerequisites](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#prerequisites)
-- [Installation](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#installation)
-- [Build with](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#build-with)
-- [Author](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#author)
-- [Acknowledgments](https://github.com/bruna-genz/shooter_game/blob/testing/README.md#acknowledgments)
+- [About](https://github.com/bruna-genz/space-burna#about)
+- [About the Game](https://github.com/bruna-genz/space-burna#about-the-game)
+  - [How to play](https://github.com/bruna-genz/space-burna#how-to-play)
+  - [Characters](https://github.com/bruna-genz/space-burna#characters)
+  - [Scenes](https://github.com/bruna-genz/space-burna#scenes)
+- [Prerequisites](https://github.com/bruna-genz/space-burna#prerequisites)
+- [Installation](https://github.com/bruna-genz/space-burna#installation)
+- [Testing](https://github.com/bruna-genz/space-burna#testing)
+- [Build with](https://github.com/bruna-genz/space-burna#build-with)
+- [Author](https://github.com/bruna-genz/space-burna#author)
+- [Acknowledgments](https://github.com/bruna-genz/space-burna#acknowledgments)
 
 # About
 
@@ -126,6 +127,13 @@ npm i
 - Run the following command to start the game in your browser.
 ```
 npm run start
+```
+
+# Testing
+
+This project has unit tests for the logic components. To run the test, use the following command:
+```
+npm run test
 ```
 
 # Built with
