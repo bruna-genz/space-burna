@@ -15,7 +15,7 @@
 - [Prerequisites](https://github.com/bruna-genz/space-burna#prerequisites)
 - [Installation](https://github.com/bruna-genz/space-burna#installation)
 - [Testing](https://github.com/bruna-genz/space-burna#testing)
-- [Build with](https://github.com/bruna-genz/space-burna#build-with)
+- [Built with](https://github.com/bruna-genz/space-burna#built-with)
 - [Future features](https://github.com/bruna-genz/space-burna#future-features)
 - [Author](https://github.com/bruna-genz/space-burna#author)
 - [Acknowledgments](https://github.com/bruna-genz/space-burna#acknowledgments)
